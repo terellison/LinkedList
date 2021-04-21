@@ -4,13 +4,7 @@
 using namespace std;
 
 int main() {
-  LinkedList<int>* list = new LinkedList<int>();
-  cout << list->getHead()->data << endl;
-  Node<int>* newNode = new Node<int>();
-  *newNode->data = 1;
-  list->insert(newNode);
-  newNode = list->getHead()->next;
-  cout << newNode->data;
-  
+	LinkedList<int>* list = new LinkedList<int>;
+	system("pause");
   return 0;
 }

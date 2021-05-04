@@ -23,6 +23,8 @@ int main() {
 	ptrThree = &testThree;
 	list->insert(ptrOne,ptrTwo,ptrThree);
 	list->showAll();
+	std::cout << "First element: " << *list->getFirst() << endl;
+	std::cout << "Last element: " << *list->getLast() << endl;
 	std::cout << "Destroying linked list..." << std::endl;
 	list->~LinkedList();
 	system("pause");

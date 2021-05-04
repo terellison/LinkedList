@@ -14,7 +14,6 @@ class LinkedList {
         this->current = this->first;
     }
 
-    template <typename T>
     T* getFirst() {
       return this->first->data;
     }
@@ -78,11 +77,8 @@ class LinkedList {
       return found;
     }
 
-    template <typename T>
     T* getLast() {
-        if(this->last->next == null) {
-            return this->last->data;
-        }
+        return this->last->data;
     }
 
     void showAll() {

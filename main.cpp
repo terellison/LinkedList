@@ -25,6 +25,7 @@ int main() {
 	list->showAll();
 	std::cout << "First element: " << *list->getFirst() << endl;
 	std::cout << "Last element: " << *list->getLast() << endl;
+	std::cout << "3 is in the list: " << (list->find(ptrThree) ? "yes" : "no") << endl;
 	std::cout << "Destroying linked list..." << std::endl;
 	list->~LinkedList();
 	system("pause");

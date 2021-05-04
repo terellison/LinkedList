@@ -8,13 +8,20 @@ int main() {
 	if(!list->Empty()) {
 		throw;
 	}
-	int* ptr = 0;
+	int* ptrOne = 0; 
+	int* ptrTwo = 0;
+	int* ptrThree = 0;
 	int testOne = 1;
-	ptr = &testOne;
-	list->append(ptr);
+	ptrOne = &testOne;
+	list->append(ptrOne);
 	int testTwo = 2;
-	ptr = &testTwo;
-	list->append(ptr);
+	ptrOne = &testTwo;
+	list->append(ptrOne);
+	int testThree = 3;
+	ptrOne = &testOne;
+	ptrTwo = &testTwo;
+	ptrThree = &testThree;
+	list->insert(ptrOne,ptrTwo,ptrThree);
 	list->showAll();
 	std::cout << "Destroying linked list..." << std::endl;
 	list->~LinkedList();

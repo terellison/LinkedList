@@ -25,9 +25,11 @@ class LinkedList {
             throw new exception("List is empty, use append()");
         }
         this->current = this->first;
-        bool foundBefore, foundAfter = false;
-        Node<T>* before, after;
-        while(!foundBefore || !foundAfter && this->current->next != null) {
+        bool foundBefore = false;
+        bool foundAfter = false;
+        Node<T>* before;
+        Node<T>* after;
+        while(!foundBefore || !foundAfter && this->current != NULL) {
             if(this->current->data == beforeValue) {
                 before = this->current;
                 foundBefore = true;
@@ -36,12 +38,16 @@ class LinkedList {
                 after = this->current;
                 foundAfter = true;
             }
-            
+          this->current = this->current->next;  
         }
         if(foundBefore && foundAfter) {
             Node<T>* newNode = new Node<T>;
+            newNode->data = dataToInsert;
             before->next = newNode;
             newNode->next = after;
+        }
+        else {
+            throw new exception("Could not find either beforeValue or afterValue to insert new data between");
         }
     }
 

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef LinkedList_H
 #define LinkedList_H
 
@@ -7,20 +8,55 @@ class LinkedList {
 
   public:
 
-    LinkedList() {}
-
-    template <typename T>
-    T* getFirst() {
-      return this->head->data;
+    LinkedList() {
+        this->first = NULL;
+        this->last = this->first;
+        this->current = this->first;
     }
 
     template <typename T>
-    void insert(Node<T>* nodeToInsert) {
-      Node<T>* currentNode = this->first;
-      while(currentNode->next != nullptr) {
-        currentNode = currentNode->next;
-      }
-      currentNode->next = nodeToInsert;
+    T* getFirst() {
+      return this->first->data;
+    }
+
+    template <typename T>
+    void insert(T* beforeValue, T* afterValue, T* dataToInsert) {
+        if(this->first == NULL) {
+            throw new exception("List is empty, use append()");
+        }
+        this->current = this->first;
+        bool foundBefore, foundAfter = false;
+        Node<T>* before, after;
+        while(!foundBefore || !foundAfter && this->current->next != null) {
+            if(this->current->data == beforeValue) {
+                before = this->current;
+                foundBefore = true;
+            }
+            if(this->current->data == afterValue) {
+                after = this->current;
+                foundAfter = true;
+            }
+            
+        }
+        if(foundBefore && foundAfter) {
+            Node<T>* newNode = new Node<T>;
+            before->next = newNode;
+            newNode->next = after;
+        }
+    }
+
+    template <typename T>
+    void append(T* data) {
+        if(this->first == NULL) {
+            this->first = new Node<T>;
+            this->first->data = data;
+            this->last = this->first;
+            return;
+        }
+        Node<T>* newNode = new Node<T>;
+        newNode->data = data;
+        this->last->next = newNode;
+        this->last = newNode;
     }
 
     template <typename T>
@@ -36,18 +72,47 @@ class LinkedList {
       return found;
     }
 
-    virtual ~LinkedList(){}
+    template <typename T>
+    T* getLast() {
+        if(this->last->next == null) {
+            return this->last->data;
+        }
+    }
+
+    void showAll() {
+        this->current = this->first;
+        while(this->current != NULL) {
+            std::cout << *this->current->data << std::endl;
+            this->current = this->current->next;
+        }
+    }
+
+    bool Empty() {
+        return this->first == NULL;
+    }
+
+    virtual ~LinkedList(){
+        this->current = this->first;
+        Node<T>* temp;
+        while(this->current != NULL) {
+            temp = this->current->next;
+            delete(this->current);
+            this->current = temp;
+        }
+    }
 
     private:
         
         template <typename T>
         struct Node {
             T* data;
-            Node<T>* next = nullptr;
+            Node<T>* next = NULL;
          };
 
         Node<T>* first;
         
         Node<T>* current;
+
+        Node<T>* last;
 };
 #endif// !LinkedList_H

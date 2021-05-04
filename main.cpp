@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-	LinkedList<int>* list = new LinkedList<int>;
+	LinkedList::LinkedList<int>* list = new LinkedList::LinkedList<int>;
 	if(!list->Empty()) {
 		throw;
 	}

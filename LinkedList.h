@@ -1,3 +1,4 @@
+namespace LinkedList {
 #pragma once
 #ifndef LinkedList_H
 #define LinkedList_H
@@ -118,3 +119,4 @@ class LinkedList {
         Node<T>* last;
 };
 #endif// !LinkedList_H
+}

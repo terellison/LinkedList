@@ -1,3 +1,6 @@
+#include "Exception.h"
+#include <iostream>
+#include <array>
 #pragma once
 namespace LinkedList {
 #ifndef LinkedList_H
@@ -25,6 +28,7 @@ class LinkedList {
 
     template <typename T>
     void append(T* item) {
+        ++this->count;
         if(this->first == NULL) {
             this->first = new Node<T>;
             this->first->item = item;
@@ -64,6 +68,47 @@ class LinkedList {
 
     bool isEmpty() {
         return this->first == NULL;
+    }
+
+    /// <summary>
+    /// Insert an item before the first occurrence of another item
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="before">Item to insert the new item before</param>
+    /// <param name="item">New item to insert</param>
+    template <typename T>
+    void insertBefore(T* before, T* item) {
+        Node<T>* newNode = new Node<T>;
+        newNode->item = item;
+        if(*this->first->item == *before) {
+            newNode->next = this->first;
+            this->first = newNode;
+            return;
+        }
+        bool found = false;
+        this->current = this->first->next;
+        Node<T>* previous = new Node<T>;
+        while(!found && this->current->next != NULL) {
+            if(*this->current->item == *item) {
+                found = true;
+                break;
+            }
+            previous = this->current;
+            this->current = this->current->next;
+        }
+        if(found) {
+            newNode->next = this->current;
+            previous->next = newNode;
+        }
+        else {
+            delete previous;
+            throw new NodeNotFoundException("Could not find item to insert new item before");
+        }
+        delete previous;
+    }
+
+    int size() {
+        return this->count;
     }
 
     virtual ~LinkedList(){

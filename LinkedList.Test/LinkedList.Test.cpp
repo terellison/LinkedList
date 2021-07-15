@@ -11,10 +11,8 @@ namespace LinkedListTest
 		LinkedList::LinkedList<int>* linkedList;
 
 		void Load() {
-			int* ptr = 0;
-			for(int i = 0; i < 200; i++) {
-				ptr = new int(i);
-				this->linkedList->append(ptr);
+			for(int i = 0; i < 10; i++) {
+				this->linkedList->append(new int(i));
 			}
 		}
 
@@ -25,8 +23,8 @@ namespace LinkedListTest
 		TEST_METHOD(Test_Load) {
 			this->linkedList = new LinkedList::LinkedList<int>;
 			Load();
-			Assert::IsTrue(this->linkedList->size() == 200);
-			Assert::IsTrue(*this->linkedList->getLast() == 199);
+			Assert::IsTrue(this->linkedList->size() == 10);
+			Assert::IsTrue(*this->linkedList->getLast() == 9);
 			Teardown();
 		}
 		TEST_METHOD(Is_LinkedList_Empty)
@@ -64,8 +62,29 @@ namespace LinkedListTest
 		TEST_METHOD(Size_Correct_After_Append) {
 			this->linkedList = new LinkedList::LinkedList<int>;
 			Load();
-			Assert::IsTrue(this->linkedList->size() == 200);
+			Assert::IsTrue(this->linkedList->size() == 10);
 			Teardown();
+		}
+
+		TEST_METHOD(Contains_Element_After_Append) {
+			this->linkedList = new LinkedList::LinkedList<int>;
+			this->linkedList->append(new int(7));
+			Assert::IsTrue(this->linkedList->contains(7));
+			Teardown();
+		}
+
+		TEST_METHOD(Empty_List_Does_Not_Contain_Element) {
+			this->linkedList = new LinkedList::LinkedList<int>;
+			Assert::IsFalse(this->linkedList->contains(7));
+			Teardown();
+		}
+
+		TEST_METHOD(Does_Not_Contain_Element_Not_Inserted) {
+			this->linkedList = new LinkedList::LinkedList<int>;
+			Load();
+			Assert::IsFalse(this->linkedList->contains(300));
+			Teardown();
+		
 		}
 
 	};

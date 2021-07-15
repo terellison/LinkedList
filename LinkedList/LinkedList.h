@@ -20,48 +20,36 @@ class LinkedList {
     }
 
     T* getFirst() {
-      return this->first->item;
+      return this->first->element;
     }
 
     // TODO: Add insertBefore() and insertAfter(), splice(), concatenate(), reverse(), toArray(), remove(), removeAll()
     // overload append to take in another list
 
     template <typename T>
-    void append(T* item) {
+    void append(T* element) {
         ++this->count;
         if(this->first == NULL) {
             this->first = new Node<T>;
-            this->first->item = item;
+            this->first->element = element;
             this->last = this->first;
             return;
         }
         Node<T>* newNode = new Node<T>;
-        newNode->item = item;
+        newNode->element = element;
         this->last->next = newNode;
         this->last = newNode;
     }
 
-    template <typename T>
-    bool contains(T* item) {
-      Node<T>* current = this->first;
-      bool found = false;
-      while(!found && current->next != nullptr) {
-        if(current->item == item) {
-          found = true;
-        }
-        current = current->next;
-      }
-      return found;
-    }
 
-    T* getLast() {
-        return this->last->item;
+    T getLast() {
+        return *this->last->element;
     }
 
     void print() {
         this->current = this->first;
         while(this->current != NULL) {
-            std::cout << *this->current->item << std::endl;
+            std::cout << *this->current->element << std::endl;
             this->current = this->current->next;
         }
     }
@@ -71,44 +59,76 @@ class LinkedList {
     }
 
     /// <summary>
-    /// Insert an item before the first occurrence of another item
+    /// Insert an element before the first occurrence of another element
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="before">Item to insert the new item before</param>
-    /// <param name="item">New item to insert</param>
+    /// <param name="before">Element to insert the new element before</param>
+    /// <param name="element">New element to insert</param>
     template <typename T>
-    void insertBefore(T* before, T* item) {
+    void insertBefore(T before, T* element) {
         Node<T>* newNode = new Node<T>;
-        newNode->item = item;
-        if(*this->first->item == *before) {
+        newNode->element = element;
+        if(*this->first->element == before) {
             newNode->next = this->first;
             this->first = newNode;
             return;
         }
-        bool found = false;
         this->current = this->first->next;
-        Node<T>* previous = new Node<T>;
-        while(!found && this->current->next != NULL) {
-            if(*this->current->item == *item) {
-                found = true;
-                break;
-            }
-            previous = this->current;
-            this->current = this->current->next;
-        }
-        if(found) {
+        if(this->contains(before)) { // NOTE: Relies on contains changing current as part of search
             newNode->next = this->current;
-            previous->next = newNode;
+            this->current->next = newNode;
+            ++this->count;
+            return;
         }
         else {
-            delete previous;
-            throw new NodeNotFoundException("Could not find item to insert new item before");
+            delete newNode;
+            throw new NodeNotFoundException("Could not find element to insert new element before");
         }
-        delete previous;
+    }
+
+    // TODO: Write test for insertAfter
+    /// <summary>
+    /// Insert an element before the first occurence of another element
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="after">Element to insert the new element after</param>
+    /// <param name="element">New element to insert</param>
+    template <typename T>
+    void insertAfter(T after, T*element) {
+        if(this->contains(after)) {
+            if(this->current == this->last) {
+                this->append(element);
+                return;
+            }
+            Node<T>* newNode = new Node<T>;
+            newNode->element = element;
+            newNode->next = this->current->next;
+            this->current->next = newNode;
+            ++this->count;
+            return;
+        }
+        else {
+            throw new NodeNotFoundException("Could not find element to insert new element after");
+        }
     }
 
     int size() {
         return this->count;
+    }
+
+    /// <summary>
+    /// Returns whether the list contains the specified element
+    /// </summary>
+    /// <typeparam name="T">Element to search for</typeparam>
+    template <typename T>
+    bool contains(T element) {
+        this->current = this->first;
+        while(this->current != NULL) {
+            if(*this->current->element == element)
+                return true;
+            this->current = this->current->next;
+        }
+        return false;
     }
 
     virtual ~LinkedList(){
@@ -125,7 +145,7 @@ class LinkedList {
         
         template <typename T>
         struct Node {
-            T* item;
+            T* element = NULL;
             Node<T>* next = NULL;
          };
         

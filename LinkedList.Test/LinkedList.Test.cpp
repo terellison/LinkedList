@@ -24,7 +24,7 @@ namespace LinkedListTest
 			this->linkedList = new LinkedList::LinkedList<int>;
 			Load();
 			Assert::IsTrue(this->linkedList->size() == 10);
-			Assert::IsTrue(*this->linkedList->getLast() == 9);
+			Assert::IsTrue(this->linkedList->getLast() == 9);
 			Teardown();
 		}
 		TEST_METHOD(Is_LinkedList_Empty)
@@ -54,7 +54,7 @@ namespace LinkedListTest
 			int before = 0;
 			int* ptrTwo = new int(before);
 			ptr = new int(4);
-			linkedList->insertBefore(ptrTwo, ptr);
+			linkedList->insertBefore(*ptrTwo, ptr);
 			Assert::IsTrue(*this->linkedList->getFirst() == *ptr);
 			Teardown();
 		}
@@ -85,6 +85,17 @@ namespace LinkedListTest
 			Assert::IsFalse(this->linkedList->contains(300));
 			Teardown();
 		
+		}
+
+		TEST_METHOD(Insert_Five_After_Eight) {
+			this->linkedList = new LinkedList::LinkedList<int>;
+			for(int i = 1; i < 4; i++) {
+				this->linkedList->append(new int(i));
+			}
+			this->linkedList->append(new int(8));
+			this->linkedList->insertAfter(8,new int(5));
+			Assert::IsTrue(this->linkedList->size() == 5);
+			Assert::IsTrue(this->linkedList->getLast() == 5);
 		}
 
 	};

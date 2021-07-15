@@ -42,8 +42,8 @@ class LinkedList {
     }
 
 
-    T* getLast() {
-        return this->last->element;
+    T getLast() {
+        return *this->last->element;
     }
 
     void print() {
@@ -65,16 +65,16 @@ class LinkedList {
     /// <param name="before">Element to insert the new element before</param>
     /// <param name="element">New element to insert</param>
     template <typename T>
-    void insertBefore(T* before, T* element) {
+    void insertBefore(T before, T* element) {
         Node<T>* newNode = new Node<T>;
         newNode->element = element;
-        if(*this->first->element == *before) {
+        if(*this->first->element == before) {
             newNode->next = this->first;
             this->first = newNode;
             return;
         }
         this->current = this->first->next;
-        if(this->contains(*element)) { // NOTE: Relies on contains changing current as part of search
+        if(this->contains(before)) { // NOTE: Relies on contains changing current as part of search
             newNode->next = this->current;
             this->current->next = newNode;
             ++this->count;
@@ -94,12 +94,17 @@ class LinkedList {
     /// <param name="after">Element to insert the new element after</param>
     /// <param name="element">New element to insert</param>
     template <typename T>
-    void insertAfter(T* after, T*element) {
-        if(this->contains(*element)) {
+    void insertAfter(T after, T*element) {
+        if(this->contains(after)) {
+            if(this->current == this->last) {
+                this->append(element);
+                return;
+            }
             Node<T>* newNode = new Node<T>;
             newNode->element = element;
             newNode->next = this->current->next;
             this->current->next = newNode;
+            ++this->count;
             return;
         }
         else {

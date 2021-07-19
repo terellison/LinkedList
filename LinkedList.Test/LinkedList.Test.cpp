@@ -104,7 +104,6 @@ namespace LinkedListTest
 				this->linkedList->append(new int(i));
 			}
 			LinkedList::LinkedList<int>* reversedList = this->linkedList->reverse();
-			reversedList->print();
 			Assert::IsTrue(reversedList->getFirst() == 4);
 		}
 

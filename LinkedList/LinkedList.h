@@ -167,6 +167,7 @@ class LinkedList {
         while(this->current != NULL) {
             temp = this->current->next;
             delete this->current;
+            --this->count;
             this->current = temp;
         }
     }
@@ -205,7 +206,7 @@ class LinkedList {
             current = next;
         }
         this->last = this->first;
-        this->first = previous;       
+        this->first = previous;
     }
 };
 #endif// !LinkedList_H

@@ -19,11 +19,11 @@ class LinkedList {
         this->count = 0;
     }
 
-    T* getFirst() {
-      return this->first->element;
+    T getFirst() {
+      return *this->first->element;
     }
 
-    // TODO: Add insertBefore() and insertAfter(), splice(), concatenate(), reverse(), toArray(), remove(), removeAll()
+    // TODO: Add splice(), concatenate(), reverse(), toArray(), remove(), removeAll()
     // overload append to take in another list
 
     template <typename T>
@@ -131,6 +131,36 @@ class LinkedList {
         return false;
     }
 
+    /// <summary>
+    /// Returns an array of type <typeparam name="T"></>
+    /// </summary>
+    /// <returns></returns>
+    T* toArray() {
+        T* result;
+        this->current = this->first;
+        for(int i = 0; i < this->count; i++) {
+            result[i] = this->current->element;
+        }
+        return result;
+    }
+
+    LinkedList<T>* reverse() {
+        LinkedList<T>* newList = new LinkedList<T>;
+        this->_reverse();
+        newList->operator=(this);
+        this->_reverse();
+        return newList;
+    }
+
+    void operator = (const LinkedList<T>* other) {
+        this->~LinkedList();
+        Node<T>* current = other->first;
+        while(current != NULL) {
+            this->append(current->element);
+            current = current->next;
+        }
+    }
+
     virtual ~LinkedList(){
         this->current = this->first;
         Node<T>* temp;
@@ -156,6 +186,27 @@ class LinkedList {
         Node<T>* current;
 
         Node<T>* last;
+
+        void _reverse() {
+        Node<T>* current = NULL;
+        Node<T>* previous = NULL;
+        Node<T>* next = NULL;
+        previous = this->first;
+        current = this->first->next;
+        next = current->next;
+        previous->next = NULL;
+        current->next = previous;
+        previous = current;
+        current = next;
+        while(current != NULL) {
+            next = current->next;
+            current->next = previous;
+            previous = current;
+            current = next;
+        }
+        this->last = this->first;
+        this->first = previous;       
+    }
 };
 #endif// !LinkedList_H
 }

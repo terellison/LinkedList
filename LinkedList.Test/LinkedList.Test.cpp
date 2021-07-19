@@ -55,7 +55,7 @@ namespace LinkedListTest
 			int* ptrTwo = new int(before);
 			ptr = new int(4);
 			linkedList->insertBefore(*ptrTwo, ptr);
-			Assert::IsTrue(*this->linkedList->getFirst() == *ptr);
+			Assert::IsTrue(this->linkedList->getFirst() == *ptr);
 			Teardown();
 		}
 
@@ -96,6 +96,16 @@ namespace LinkedListTest
 			this->linkedList->insertAfter(8,new int(5));
 			Assert::IsTrue(this->linkedList->size() == 5);
 			Assert::IsTrue(this->linkedList->getLast() == 5);
+		}
+
+		TEST_METHOD(Reverse_List) {
+			this->linkedList = new LinkedList::LinkedList<int>;
+			for(int i = 1; i < 5; i++) {
+				this->linkedList->append(new int(i));
+			}
+			LinkedList::LinkedList<int>* reversedList = this->linkedList->reverse();
+			reversedList->print();
+			Assert::IsTrue(reversedList->getFirst() == 4);
 		}
 
 	};

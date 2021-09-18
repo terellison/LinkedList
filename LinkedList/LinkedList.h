@@ -74,7 +74,8 @@ class LinkedList {
             this->first = newNode;
             return;
         }
-        Node<T>* current = this->find(before);
+        Node<T>* current = NULL;
+        current = this->find(before);
         if(current != NULL) {
             newNode->next = current;
             current->next = newNode;
@@ -102,7 +103,8 @@ class LinkedList {
                 return;
             }
             Node<T>* newNode = new Node<T>;
-            Node<T>* afterPtr = this->find(*element);
+            Node<T>* afterPtr = NULL;
+            afterPtr = this->find(*element);
             newNode->element = element;
             newNode->next = afterPtr->next;
             afterPtr->next = newNode;
@@ -262,15 +264,13 @@ class LinkedList {
             }
             Node<T>* current = this->first->next;
             bool found = false;
-            while(current != NULL) {
+            while(current != NULL && !found) {
                 if(*current->element == element) {
-                    return current;
+                    found = true;
                 }
                 current = current->next;
             }
-            if(!found) {
-                return NULL;
-            }
+            return found ? current : NULL;
         }
 };
 #endif// !LinkedList_H

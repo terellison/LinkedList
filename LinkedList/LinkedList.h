@@ -23,8 +23,9 @@ class LinkedList {
       return *this->first->element;
     }
 
-    // TODO: Add splice(), concatenate(), reverse(), toArray(), remove(), removeAll()
-    // overload append to take in another list
+    /* TODO: Add splice(), concatenate(), removeAll()
+     * overload append to take in another list
+     */
 
     template <typename T>
     void append(T* element) {
@@ -47,10 +48,10 @@ class LinkedList {
     }
 
     void print() {
-        this->current = this->first;
-        while(this->current != NULL) {
-            std::cout << *this->current->element << std::endl;
-            this->current = this->current->next;
+        Node<T>* current = this->first;
+        while(current != NULL) {
+            std::cout << *current->element << std::endl;
+            current = current->next;
         }
     }
 
@@ -73,10 +74,10 @@ class LinkedList {
             this->first = newNode;
             return;
         }
-        this->current = this->first->next;
-        if(this->contains(before)) { // NOTE: Relies on contains changing current as part of search
-            newNode->next = this->current;
-            this->current->next = newNode;
+        Node<T>* current = this->find(before);
+        if(current != NULL) {
+            newNode->next = current;
+            current->next = newNode;
             ++this->count;
             return;
         }
@@ -96,14 +97,15 @@ class LinkedList {
     template <typename T>
     void insertAfter(T after, T*element) {
         if(this->contains(after)) {
-            if(this->current == this->last) {
+            if(after == *this->last->element) {
                 this->append(element);
                 return;
             }
             Node<T>* newNode = new Node<T>;
+            Node<T>* afterPtr = this->find(*element);
             newNode->element = element;
-            newNode->next = this->current->next;
-            this->current->next = newNode;
+            newNode->next = afterPtr->next;
+            afterPtr->next = newNode;
             ++this->count;
             return;
         }
@@ -136,10 +138,11 @@ class LinkedList {
     /// </summary>
     /// <returns></returns>
     T* toArray() {
-        T* result;
-        this->current = this->first;
+        T* result = new T[this->count];
+        Node<T>* current = this->first;
         for(int i = 0; i < this->count; i++) {
-            result[i] = this->current->element;
+            *(result + i) = *current->element;
+            current = current->next;
         }
         return result;
     }
@@ -152,6 +155,42 @@ class LinkedList {
         return newList;
     }
 
+    /// <summary>
+        /// Removes the first occurence of the specified element
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="element">Element to be removed</param>
+        template <typename T>
+        void remove(T* element) {
+            if(!this->contains(*element)) {
+                throw new NodeNotFoundException("Could not find the specified element");
+            }
+            Node<T>* current = this->first;
+            Node<T>* next = current->next;
+            Node<T>* previous = NULL;
+            while(current != NULL) {
+                if(*current->element == *element && current == this->first) {
+                    this->first = next;
+                    delete current;
+                    break;
+                }
+                else if(*current->element == *element && current == this->last) {
+                    this->last = next;
+                    delete current;
+                    break;
+                }
+                else if(*current->element == *element) {
+                    previous->next = next;
+                    delete current;
+                    break;
+                }
+                previous = current;
+                current = next;
+                next = current->next;
+            }
+            --this->count;
+        }
+
     void operator = (const LinkedList<T>* other) {
         this->~LinkedList();
         Node<T>* current = other->first;
@@ -162,13 +201,13 @@ class LinkedList {
     }
 
     virtual ~LinkedList(){
-        this->current = this->first;
+        Node<T>* current = this->first;
         Node<T>* temp;
-        while(this->current != NULL) {
-            temp = this->current->next;
-            delete this->current;
+        while(current != NULL) {
+            temp = current->next;
+            delete current;
             --this->count;
-            this->current = temp;
+            current = temp;
         }
     }
 
@@ -188,26 +227,51 @@ class LinkedList {
 
         Node<T>* last;
 
+        // TODO: Get this down to a two pointer implementation
         void _reverse() {
-        Node<T>* current = NULL;
-        Node<T>* previous = NULL;
-        Node<T>* next = NULL;
-        previous = this->first;
-        current = this->first->next;
-        next = current->next;
-        previous->next = NULL;
-        current->next = previous;
-        previous = current;
-        current = next;
-        while(current != NULL) {
+            Node<T>* current = NULL;
+            Node<T>* previous = NULL;
+            Node<T>* next = NULL;
+            previous = this->first;
+            current = this->first->next;
             next = current->next;
+            previous->next = NULL;
             current->next = previous;
             previous = current;
             current = next;
+            while(current != NULL) {
+                next = current->next;
+                current->next = previous;
+                previous = current;
+                current = next;
+            }
+            this->last = this->first;
+            this->first = previous;
         }
-        this->last = this->first;
-        this->first = previous;
-    }
+
+        /// <summary>
+        /// Returns a pointer to the first instance of the specified element
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="element">Element to be found</param>
+        /// <returns></returns>
+        template <typename T>
+        Node<T>* find(T& element) {
+            if(*this->first->element == element) {
+                return this->first;
+            }
+            Node<T>* current = this->first->next;
+            bool found = false;
+            while(current != NULL) {
+                if(*current->element == element) {
+                    return current;
+                }
+                current = current->next;
+            }
+            if(!found) {
+                return NULL;
+            }
+        }
 };
 #endif// !LinkedList_H
 }

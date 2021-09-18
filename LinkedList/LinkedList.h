@@ -200,21 +200,6 @@ class LinkedList {
         }
     }
 
-    /// <summary>
-    /// Returns whether the list contains the specified element
-    /// </summary>
-    /// <typeparam name="T">Element to search for</typeparam>
-    template <typename T>
-    bool contains(T element) {
-        this->current = this->first;
-        while(this->current != NULL) {
-            if(*this->current->element == element)
-                return true;
-            this->current = this->current->next;
-        }
-        return false;
-    }
-
     virtual ~LinkedList(){
         Node<T>* current = this->first;
         Node<T>* temp;

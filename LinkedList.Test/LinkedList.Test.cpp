@@ -82,26 +82,6 @@ namespace LinkedListTest
 		TEST_METHOD(Does_Not_Contain_Element_Not_Inserted) {
 			this->linkedList = new LinkedList::LinkedList<int>;
 			Load();
-			Assert::IsTrue(this->linkedList->size() == 10);
-			Teardown();
-		}
-
-		TEST_METHOD(Contains_Element_After_Append) {
-			this->linkedList = new LinkedList::LinkedList<int>;
-			this->linkedList->append(new int(7));
-			Assert::IsTrue(this->linkedList->contains(7));
-			Teardown();
-		}
-
-		TEST_METHOD(Empty_List_Does_Not_Contain_Element) {
-			this->linkedList = new LinkedList::LinkedList<int>;
-			Assert::IsFalse(this->linkedList->contains(7));
-			Teardown();
-		}
-
-		TEST_METHOD(Does_Not_Contain_Element_Not_Inserted) {
-			this->linkedList = new LinkedList::LinkedList<int>;
-			Load();
 			Assert::IsFalse(this->linkedList->contains(300));
 			Teardown();
 		
@@ -141,18 +121,6 @@ namespace LinkedListTest
 			}
 			Assert::IsTrue(match);
 			Teardown();
-		
-		}
-
-		TEST_METHOD(Insert_Five_After_Eight) {
-			this->linkedList = new LinkedList::LinkedList<int>;
-			for(int i = 1; i < 4; i++) {
-				this->linkedList->append(new int(i));
-			}
-			this->linkedList->append(new int(8));
-			this->linkedList->insertAfter(8,new int(5));
-			Assert::IsTrue(this->linkedList->size() == 5);
-			Assert::IsTrue(this->linkedList->getLast() == 5);
 		}
 
 		TEST_METHOD(Remove_Middle_Element) {

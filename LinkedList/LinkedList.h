@@ -264,15 +264,13 @@ class LinkedList {
             }
             Node<T>* current = this->first->next;
             bool found = false;
-            while(current != NULL) {
+            while(current != NULL && !found) {
                 if(*current->element == element) {
-                    return current;
+                    found = true;
                 }
                 current = current->next;
             }
-            if(!found) {
-                return NULL;
-            }
+            return found ? current : NULL;
         }
 };
 #endif// !LinkedList_H

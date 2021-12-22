@@ -1,4 +1,5 @@
 #include "Exception.h"
+#include "Node.h"
 #include <iostream>
 #include <array>
 #pragma once
@@ -214,13 +215,7 @@ class LinkedList {
     }
 
     private:
-        
-        template <typename T>
-        struct Node {
-            T* element = NULL;
-            Node<T>* next = NULL;
-         };
-        
+
         int count;
 
         Node<T>* first;

@@ -4,7 +4,7 @@
 
 template <typename T>
 struct Node {
-    T* element = NULL;
+    T element;
     Node<T>* next = NULL;
 };
 #endif
